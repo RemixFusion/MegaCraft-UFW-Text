@@ -5,6 +5,8 @@ These scripts are designed to replace the default behavior of TCPShield's IPSet 
 This will allow you to see the rules in UFW, rather than having to check IPSet or IPTables for the rules. For those utilizing UFW, this will make management easier.
 
 ## Configuration
+Add a new UFW application called Minecraft and specify the ports to your server.
+
 Download the tcpshield.sh file and place it in a directory on your server.
 
 Run the following command to make the file executable:
@@ -15,6 +17,22 @@ chmod u+x tcpshield.sh
 Test the script by running ./tcpshield (You may want to run it twice and check ufw status to ensure rules are still present)
 
 Create a Cron if you wish to automatically update the list periodically.
+
+### UFW Application
+Navigate to ```/etc/ufw/applications.d/```
+
+Add a new file ```nano minecraft```
+
+Add the following text:
+```
+[Minecraft]
+  title = "Minecraft"
+  description = "Minecraft Java and Bedrock Ports"
+  ports = 25565/tcp|19132/udp
+```
+At this step, it is important that you define the ports of your backend server(s). By default, we allow the default ports for Java (25565/tcp) and Bedrock (19132/udp) Edition. You can continue adding more through adding ```|``` and additional ports/protocols, or take out the existing ```|``` and enter only one port if you are running a Java or Bedrock only server.
+
+Save the configuration. To exit in nano type ```Control + X``` followed by ```Y```. 
 
 ### Cron
 To automatically update your ruleset, you can use a Cron job to accomplish the task. The cron listed below will check every four hours for changes against TCPShields IP list. If you wish to check hourly, you can change the cron to ```0 */1 * * *```. 
