@@ -23,3 +23,6 @@ Ubuntu: ```crontab -e``` then select your text editor of choice. At the bottom o
 ![alt text](https://github.com/RemixFusion/Minecraft-Proxy-Protocol-UFW-Ruleset/blob/main/crontab.png?raw=true)
 
 Change /location/to/stored/tcpshield.sh to the path of the tcpshield.sh script you downloaded earlier. This is most commonly stored in /home/your-username or /root, unless you were in a particular directory when you downloaded the script. You can always move the file to another location, such as /usr/local/tcpshield.sh. Make sure you re-run the executable command if you rename/move the file.
+
+### Storage
+By default, the script will fetch and store the IP List from TCPShield and store it at ```/usr/local/tcpshield.txt```. You can change this in the tcpshield.sh file if you'd rather use a different directory. We also encourage using /usr/local for storage of the .sh files, though this can be changed too. Please make sure to update any locations in both the .sh file and in your cron.
