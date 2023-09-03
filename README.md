@@ -32,7 +32,7 @@ Add the following text:
 ```
 At this step, it is important that you define the ports of your backend server(s). By default, we allow the default ports for Java (25565/tcp) and Bedrock (19132/udp) Edition. You can continue adding more through adding ```|``` and additional ports/protocols, or take out the existing ```|``` and enter only one port if you are running a Java or Bedrock only server.
 
-Save the configuration. To exit in nano type ```Control + X``` followed by ```Y```. 
+Save the configuration. To exit in nano type ```CTRL + X``` followed by ```Y```. 
 
 ### Cron
 To automatically update your ruleset, you can use a Cron job to accomplish the task. The cron listed below will check every four hours for changes against TCPShields IP list. If you wish to check hourly, you can change the cron to ```0 */1 * * *```. 
