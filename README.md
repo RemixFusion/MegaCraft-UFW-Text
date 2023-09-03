@@ -16,6 +16,7 @@ Create a Cron to automatically run the script at whatever interval you wish.
 
 ### Cron
 Ubuntu: ```crontab -e```
+
 0 */4 * * * /location/to/stored/tcpshield.sh
 
 0 */4 * * * will run/check every 4 hours. To make it check every hour, you can use 0 */1 * * * .
