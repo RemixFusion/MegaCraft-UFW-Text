@@ -10,5 +10,5 @@ for NUM in $RULES_DESC; do
 done
 
 for IP in $(cat $IPFILE); do
-  ufw route allow from $IP to any app "$APPNAME"
+  ufw allow from $IP to any app "$APPNAME"
 done
