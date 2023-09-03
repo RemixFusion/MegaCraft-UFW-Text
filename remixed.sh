@@ -1,5 +1,4 @@
 #!/bin/bash
-
 APPNAME="Minecraft"
 IPFILE=/usr/local/remixed-v4.txt
 UFW_RULE_PREFIX="Allow Remixed Access to Minecraft Server"
