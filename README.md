@@ -1,6 +1,8 @@
 # UFW Script for TCPShield/Remixed
 
-These scripts are designed to replace the default behavior of TCPShield's IPSet and utilize UFW (IPTables wrapper) Firewall instead. When UFW and IPSet are enabled, IPSet does not take prescident, requiring a UFW rule to allow access to backend servers. While UFW can be configured to only allow from appropriate IP addresses to these backends, this script will automatically handle creating that ruleset and updating it regularly. You do not need IPSet with this script.
+These scripts are designed to replace the default behavior of TCPShield's IPSet and utilize UFW (IPTables wrapper) Firewall instead. When UFW and IPSet are enabled, IPSet does not take prescident, requiring a UFW rule to allow access to backend servers or additional UFW rules specifying access. While UFW can be configured to only allow from appropriate IP addresses to these backends, this script will automatically handle creating that ruleset and updating it regularly. You do not need IPSet with this script.
+
+This will allow you to see the rules in UFW, rather than having to check IPSet or IPTables for the rules. For those utilizing UFW, this will make management easier.
 
 ## Configuration
 Download the tcpshield.sh file and place it in a directory on your server.
