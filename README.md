@@ -20,4 +20,6 @@ To automatically update your ruleset, you can use a Cron job to accomplish the t
 Ubuntu: ```crontab -e``` then select your text editor of choice. At the bottom of the list, below the last #, enter the following:
 ```0 */4 * * * /location/to/stored/tcpshield.sh```
 
+![alt text](https://github.com/RemixFusion/Minecraft-Proxy-Protocol-UFW-Ruleset/blob/main/crontab.png?raw=true)
+
 Change /location/to/stored/tcpshield.sh to the path of the tcpshield.sh script you downloaded earlier. This is most commonly stored in /home/your-username or /root, unless you were in a particular directory when you downloaded the script. You can always move the file to another location, such as /usr/local/tcpshield.sh. Make sure you re-run the executable command if you rename/move the file.
