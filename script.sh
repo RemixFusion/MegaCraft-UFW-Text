@@ -1,7 +1,9 @@
 #!/bin/bash
 
-APPNAME="BungeeCord"
-IPFILE=/usr/local/v4.txt
+APPNAME="Minecraft"
+IPFILE=/usr/local/tcp-v4.txt
+
+wget https://tcpshield.com/v4 -O /usr/local/tcp-v4.txt
 
 RULES_DESC=$(ufw status numbered | grep "$APPNAME" \
   | awk -F"[][]" '{print $2}' | tr --delete [:blank:] | sort -rn)
