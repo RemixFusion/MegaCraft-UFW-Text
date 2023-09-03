@@ -26,3 +26,10 @@ Change /location/to/stored/tcpshield.sh to the path of the tcpshield.sh script y
 
 ### Storage
 By default, the script will fetch and store the IP List from TCPShield and store it at ```/usr/local/tcpshield.txt```. You can change this in the tcpshield.sh file if you'd rather use a different directory. We also encourage using /usr/local for storage of the .sh files, though this can be changed too. Please make sure to update any locations in both the .sh file and in your cron.
+
+### Why does this not specifically allow the port(s) of my Minecraft Server?
+While your server will typically listen on port 25565/tcp for Java Edition or 19132/udp for Bedrock Edition, players establish a connection to your server with a random port. BungeeCord allows you to see this with /ip player_name. As a result, we must allow the entirety of the IPs listed, for all ports. You can always fine-tune the ruleset to block access to particular ports if there is a particular need. It should be noted that this mimicks the functionality of IPSet which also allows all ports.
+
+Providers such as TCPShield will often only allow Minecraft traffic to pass, and block other ports used for web servers and other applications which may be hosted on your server. This is not guaranteed, and you may want to check with your provider for specific information.
+
+
