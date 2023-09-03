@@ -2,50 +2,47 @@
 
 APPNAME="Minecraft"
 IPFILE=/usr/local/tcp-v4.txt
+UFW_RULE_PREFIX="Allow TCPShield Access to Minecraft Server"
 
 # Download the list of IPs from the website
-wget https://tcpshield.com/v4 -O /usr/local/tcp-v4.txt
+wget https://tcpshield.com/v4 -O "$IPFILE"
 
-# Get the list of currently allowed IPs for your application
-CURRENT_IPS=$(ufw status numbered | grep "$APPNAME" | awk -F"[][]" '{print $2}' | tr --delete [:blank:] | sort -rn)
-
-# Create an array from the current IPs
-IFS=$'\n' read -r -a CURRENT_IPS_ARRAY <<< "$CURRENT_IPS"
-
-# Function to check if an IP is in the list
-ip_in_list() {
-  local ip_to_check="$1"
-  for ip in "${CURRENT_IPS_ARRAY[@]}"; do
-    if [[ "$ip" == "$ip_to_check" ]]; then
-      return 0  # IP is in the list
-    fi
-  done
-  return 1  # IP is not in the list
+# Function to validate CIDR notation
+is_valid_cidr() {
+  local cidr="$1"
+  local ip
+  local mask
+  IFS="/" read -r ip mask <<< "$cidr"
+  if [[ $ip =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] && [[ $mask =~ ^[0-9]+$ ]] && ((mask >= 0 && mask <= 32)); then
+    return 0  # CIDR is valid
+  else
+    return 1  # CIDR is invalid
+  fi
 }
 
-# Create arrays to track IPs to remove and add
-IPS_TO_REMOVE=()
-IPS_TO_ADD=()
-
-# Loop through the IPs from the file and categorize them
+# Loop through the IPs in the file and validate them
 while read -r IP; do
-  if ! ip_in_list "$IP"; then
-    IPS_TO_ADD+=("$IP")
+  # Trim leading and trailing whitespace
+  IP=$(echo "$IP" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+
+  # Check if the line is empty or starts with a comment character (#)
+  if [[ -z $IP || $IP =~ ^# ]]; then
+    continue
+  fi
+
+  if is_valid_cidr "$IP"; then
+    if ! ufw status | grep -q "$UFW_RULE_PREFIX" | grep -q "$IP"; then
+      # IP is not in the current list, add it to UFW
+      ufw allow from "$IP" to any app "$APPNAME" comment "$UFW_RULE_PREFIX"
+    fi
+  else
+    echo "Invalid CIDR notation: $IP"
   fi
 done < "$IPFILE"
 
-for current_ip in "${CURRENT_IPS_ARRAY[@]}"; do
-  if ! grep -q "$current_ip" "$IPFILE"; then
-    IPS_TO_REMOVE+=("$current_ip")
+# Remove IPs from UFW that are no longer in the list
+ufw status | grep -o "$UFW_RULE_PREFIX from [0-9./]\+" | awk '{print $3}' | sort | uniq | while read -r IP; do
+  if ! grep -q "$IP" "$IPFILE"; then
+    ufw delete allow from "$IP" to any app "$APPNAME" comment "$UFW_RULE_PREFIX"
   fi
-done
-
-# Remove IPs that are no longer in the list
-for IP in "${IPS_TO_REMOVE[@]}"; do
-  ufw delete allow from "$IP" to any app "$APPNAME" comment 'Allow TCPShield Access to Minecraft Server'
-done
-
-# Add new IPs from the file
-for IP in "${IPS_TO_ADD[@]}"; do
-  ufw allow from "$IP" to any app "$APPNAME" comment 'Allow TCPShield Access to Minecraft Server'
 done
