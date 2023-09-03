@@ -1,5 +1,4 @@
 #!/bin/bash
-
 APPNAME="Minecraft"
 IPFILE=/usr/local/tcp-v4.txt
 UFW_RULE_PREFIX="Allow TCPShield Access to Minecraft Server"
